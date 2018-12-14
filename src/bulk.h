@@ -60,24 +60,19 @@ public:
     BraceHandler(std::shared_ptr<IBulk> bulk) : Handler(bulk) {}
     void handle(const std::string &cmd) final {
         if (cmd == "{") {
-            if (!opened) {
-                opened = true;
-                //std::cout << "Block begins" << std::endl;
+            if (openCount++ == 0) {
                 startOfBlock();
             }
         } else if (cmd == "}") {
-            if (opened) {
-                //std::cout << "Block ends" << std::endl;
-                opened = false;
+            if (--openCount == 0) {
                 endOfBlock();
             }
         } else {
-            //Handler::handle(cmd);
-            //std::cout << "Nothing to do" << std::endl;
+            Handler::handle(cmd);
         }
     }
 private:
-    bool opened = false;
+    int openCount = 0;
 };
 
 class CommandHandler : public Handler
@@ -85,12 +80,7 @@ class CommandHandler : public Handler
 public:
     CommandHandler(std::shared_ptr<IBulk> bulk) : Handler(bulk) {}
     void handle(const std::string &cmd) final {
-        if (cmd != "{" && cmd != "}") {
-            //std::cout << "Command" << std::endl;
-            addCommand(cmd);
-        } else {
-            Handler::handle(cmd);
-        }
+        addCommand(cmd);
     }
 };
 
@@ -98,12 +88,12 @@ class StreamWatcher
 {
 public:
     StreamWatcher(std::shared_ptr<IBulk> bulk) : mCommandHandler(bulk), mBraceHandler(bulk), mBulk(bulk) {
-        mCommandHandler.setNext(&mBraceHandler);
+        mBraceHandler.setNext(&mCommandHandler);
     }
     friend std::istream& operator>>(std::istream &is, StreamWatcher &sw) {
-        for (std::string cmd; std::getline(is, cmd) && !cmd.empty(); ) {
-        //for (std::string cmd; std::getline(is, cmd); ) {
-            sw.mCommandHandler.handle(cmd);
+        //for (std::string cmd; std::getline(is, cmd) && !cmd.empty(); ) {
+        for (std::string cmd; std::getline(is, cmd); ) {
+            sw.mBraceHandler.handle(cmd);
         }
         sw.mBulk->dump();
         return is;
@@ -132,6 +122,7 @@ public:
 
     virtual void endOfBlock() {
         mBlockStarted = false;
+        data.emplace_back(std::vector<std::string>());
     }
 
     virtual void dump() {
