@@ -8,7 +8,7 @@ class BulkProxy
 {
 public:
     BulkProxy(size_t bulkSize);
-    friend std::istream& operator>>(std::istream &is, BulkProxy &sw);
+    friend std::istream& operator>>(std::istream &is, BulkProxy &bulkProxy);
 private:
     std::shared_ptr<IBulk> mBulk;
     std::shared_ptr<Handler> mCommandHandler;

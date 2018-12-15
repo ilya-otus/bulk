@@ -3,8 +3,8 @@
 
 std::string version() {
     std::string version = std::to_string(versionMajor()) + "." +
-                          std::to_string(versionMinor()) + "." +
-			  std::to_string(versionPatch());
+        std::to_string(versionMinor()) + "." +
+        std::to_string(versionPatch());
     return version;
 }
 

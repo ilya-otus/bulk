@@ -10,9 +10,9 @@ BulkProxy::BulkProxy(size_t bulkSize = 1)
     mBraceHandler->setNext(mCommandHandler);
 }
 
-std::istream& operator>>(std::istream &is, BulkProxy &sw) {
+std::istream& operator>>(std::istream &is, BulkProxy &bulkProxy) {
     for (std::string cmd; std::getline(is, cmd); ) {
-        sw.mBraceHandler->handle(cmd);
+        bulkProxy.mBraceHandler->handle(cmd);
     }
     return is;
 }

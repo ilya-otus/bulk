@@ -11,7 +11,7 @@ class Bulk : public IBulk
 {
 public:
     Bulk(size_t bulkSize);
-    virtual void addCommand(const std::string &c);
+    virtual void addCommand(const std::string &cmd);
     virtual void startOfBlock();
     virtual void endOfBlock();
     virtual void dumpAll();
@@ -21,7 +21,7 @@ private:
     void newBulk();
 
 private:
-    std::vector<BulkContainer> data;
+    std::vector<BulkContainer> mData;
     bool mBlockStarted = false;
     size_t mBulkSize;
     OutputHelper mOut;

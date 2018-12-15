@@ -7,10 +7,10 @@ Bulk::Bulk(size_t bulkSize)
 }
 
 void Bulk::addCommand(const std::string &c) {
-    if (data.size() == 0 || data.back().size() == mBulkSize) {
+    if (mData.size() == 0 || mData.back().size() == mBulkSize) {
         newBulk();
     }
-    data.back().emplace_back(c);
+    mData.back().emplace_back(c);
 }
 
 void Bulk::startOfBlock() {
@@ -25,9 +25,9 @@ void Bulk::endOfBlock() {
 
 void Bulk::dumpAll() {
     if (mBlockStarted) {
-        data.erase(data.end() - 1);
+        mData.erase(mData.end() - 1);
     }
-    for (auto bulk: data) {
+    for (auto bulk: mData) {
         dumpBulk(bulk);
     }
 }
@@ -44,9 +44,9 @@ void Bulk::dumpBulk(const BulkContainer &rawBulk) {
 }
 
 void Bulk::newBulk() {
-    if (data.size() != 0) {
-        dumpBulk(data.back());
+    if (mData.size() != 0) {
+        dumpBulk(mData.back());
     }
-    data.emplace_back(BulkContainer());
+    mData.emplace_back(BulkContainer());
 }
 

@@ -4,35 +4,42 @@
 #include <string>
 
 OutputHelper::~OutputHelper() {
-    if (logIsOpened) {
-        dumpFile.close();
+    if (mLogIsOpened) {
+        mDumpFile.close();
     }
 }
 
 void OutputHelper::endl() {
     std::cout << std::endl;
     delayedInit();
-    if (logIsOpened) {
-        dumpFile << std::endl;
+    if (mLogIsOpened) {
+        mDumpFile << std::endl;
     }
 }
 
-void OutputHelper::operator<<(const std::string &o) {
-    std::cout << o;
+void OutputHelper::operator<<(const std::string &output) {
+    std::cout << output;
     delayedInit();
-    if (logIsOpened) {
-        dumpFile << o;
+    if (mLogIsOpened) {
+        mDumpFile << output;
     }
 }
+
 void OutputHelper::delayedInit() {
-    if (!logIsOpened) {
-        dumpFile.open(genFileName(), std::fstream::out);
-        logIsOpened = dumpFile.is_open();
+    if (!mLogIsOpened) {
+        mFileName = genFileName();
+        mDumpFile.open(mFileName, std::fstream::out);
+        mLogIsOpened = mDumpFile.is_open();
     }
 }
+
 std::string OutputHelper::genFileName() {
     std::string fileName("bulk");
     fileName += std::to_string(std::time(nullptr));
     fileName += ".log";
     return fileName;
+}
+
+std::string OutputHelper::fileName() {
+    return mFileName;
 }
