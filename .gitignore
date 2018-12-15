@@ -6,7 +6,7 @@
 !/*.h
 !/*.h.in
 !/*.hpp
-!/src
-!/tests
+!/src/
+!/tests/
 !CMakeLists.txt
 version.h
