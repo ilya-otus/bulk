@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.2)
-add_library(blk SHARED
+add_library(blk
     lib.cpp
     handler.cpp
     brace_handler.cpp
