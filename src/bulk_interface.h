@@ -7,4 +7,5 @@ public:
     virtual void startOfBlock() = 0;
     virtual void endOfBlock() = 0;
     virtual void dumpAll() = 0;
+    virtual std::string fileName() = 0;
 };

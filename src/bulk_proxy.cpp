@@ -16,3 +16,7 @@ std::istream& operator>>(std::istream &is, BulkProxy &bulkProxy) {
     }
     return is;
 }
+
+std::shared_ptr<IBulk> BulkProxy::bulk() {
+    return mBulk;
+}

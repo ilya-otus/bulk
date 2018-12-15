@@ -28,7 +28,7 @@ void OutputHelper::operator<<(const std::string &output) {
 void OutputHelper::delayedInit() {
     if (!mLogIsOpened) {
         mFileName = genFileName();
-        mDumpFile.open(mFileName, std::fstream::out);
+        mDumpFile.open(mFileName, std::fstream::out | std::fstream::trunc);
         mLogIsOpened = mDumpFile.is_open();
     }
 }
