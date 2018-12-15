@@ -14,6 +14,5 @@ std::istream& operator>>(std::istream &is, BulkProxy &sw) {
     for (std::string cmd; std::getline(is, cmd); ) {
         sw.mBraceHandler->handle(cmd);
     }
-    sw.mBulk->dump();
     return is;
 }
