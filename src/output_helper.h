@@ -1,22 +1,25 @@
 #pragma once
 #include <fstream>
 #include "output_item_interface.h"
+#include <vector>
 
 class string;
 
 class OutputHelper
 {
 public:
-    OutputHelper(const size_t poolSize = 1);
+    OutputHelper(size_t poolSize = 2, bool loggingEnabled = false);
     ~OutputHelper();
     void endl();
     void operator<<(const std::string &o);
     void setPoolSize(const size_t newSize);
-    void addPermanentOutput(IOutputItem *outputItem);
+    void setLoggingEnabled();
+    void setLoggingDisabled();
 private:
     void expandPool(const size_t newSize);
     void reducePool(const size_t newSize);
 private:
     std::vector<IOutputItem *> mProcessingPool;
-    std::vector<IOutputItem *> mPermanentOutputs;
+    bool mLoggingEnabled;
+    IOutputItem *mLoggingItem;
 };

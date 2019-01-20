@@ -1,12 +1,15 @@
 cmake_minimum_required(VERSION 3.2)
 add_library(blk
-    lib.cpp
-    handler.cpp
     brace_handler.cpp
-    command_handler.cpp
-    handler_fabric.cpp
     bulk.cpp
     bulk_proxy.cpp
+    CMakeLists.txt
+    command_handler.cpp
+    console_output.cpp
+    file_output.cpp
+    handler.cpp
+    handler_fabric.cpp
+    lib.cpp
     output_helper.cpp
     )
 set_target_properties(blk PROPERTIES

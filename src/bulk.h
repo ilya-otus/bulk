@@ -12,11 +12,10 @@ class Bulk : public IBulk
 public:
     Bulk(size_t bulkSize);
     ~Bulk();
-    virtual void addCommand(const std::string &cmd);
-    virtual void startOfBlock();
-    virtual void endOfBlock();
-    virtual void dumpAll();
-    virtual std::string fileName();
+    void addCommand(const std::string &cmd);
+    void startOfBlock();
+    void endOfBlock();
+    void dumpAll();
 
 private:
     void dumpBulk(const BulkContainer &rawBulk);

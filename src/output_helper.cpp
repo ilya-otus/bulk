@@ -2,16 +2,23 @@
 #include <iostream>
 #include <ctime>
 #include <string>
+#include <algorithm>
+#include "console_output.h"
 #include "file_output.h"
 
-OutputHelper::OutputHelper(const size_t poolSize) {
+OutputHelper::OutputHelper(size_t poolSize, bool loggingEnabled)
+    : mLoggingEnabled(loggingEnabled) {
     expandPool(poolSize);
+    mLoggingItem = nullptr;
+    if (mLoggingEnabled) {
+        mLoggingItem = new ConsoleOutput();
+    }
 }
 
 OutputHelper::~OutputHelper() {
     reducePool(0);
-    for (size_t i = mPermanentOutputs.size(); i >= 0; --i) {
-        delete mPermanentOutputs[i];
+    if (mLoggingEnabled) {
+        delete mLoggingItem;
     }
 }
 
@@ -21,10 +28,6 @@ void OutputHelper::setPoolSize(const size_t newSize) {
     } else if (newSize < mProcessingPool.size()) {
         reducePool(newSize);
     }
-}
-
-void OutputHelper::addPermanentOutput(IOutputItem *outputItem) {
-    mPermanentOutputs.push_back(outputItem);
 }
 
 void OutputHelper::expandPool(const size_t newSize) {
@@ -41,20 +44,23 @@ void OutputHelper::reducePool(const size_t newSize) {
     mProcessingPool.resize(newSize);
 }
 
-void OutputHelper::endl() {
-    ;
-}
-
 void OutputHelper::operator<<(const std::string &output) {
-    for (auto permanentItem: mPermanentOutputs) {
-        permanentItem << output;
+    if (mLoggingEnabled) {
+        (*mLoggingItem) << output;
+        mLoggingItem->endl();
     }
     while (true) {
-        auto available = std::find_if(mProcessingPool.begin(), mProcessingPool.end(), [](IOutputItem *item) { return item.isAvailable(); });
+        auto available = std::find_if(mProcessingPool.begin(), mProcessingPool.end(), [](IOutputItem *item) { return item->isAvailable(); });
         if (available != mProcessingPool.end()) {
-            poolItem << output;
+            (**available) << output;
+            (*available)->endl();
             break;
         }
     }
 }
 
+void OutputHelper::setLoggingEnabled() {
+}
+
+void OutputHelper::setLoggingDisabled() {
+}

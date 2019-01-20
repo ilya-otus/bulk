@@ -4,6 +4,7 @@ Bulk::Bulk(size_t bulkSize)
     : IBulk(),
     mBulkSize(bulkSize)
 {
+    mOut.setLoggingEnabled();
 }
 
 Bulk::~Bulk() {
@@ -49,18 +50,14 @@ void Bulk::dumpAll() {
     }
 }
 
-std::string Bulk::fileName() {
-    return mOut.fileName();
-}
-
 void Bulk::dumpBulk(const BulkContainer &rawBulk) {
-    mOut << "bulk: ";
+    std::string outputLine = "bulk: ";
     for (auto item = rawBulk.begin(); item != rawBulk.end(); ++item) {
-        mOut << *item;
+        outputLine += *item;
         if (item != rawBulk.end()-1) {
-            mOut << ", ";
+            outputLine += ", ";
         }
     }
-    mOut.endl();
+    mOut << outputLine;
 }
 
