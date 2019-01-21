@@ -1,6 +1,5 @@
 #include "output_helper.h"
 #include <iostream>
-#include <ctime>
 #include <string>
 #include <algorithm>
 #include "console_output.h"
@@ -31,14 +30,16 @@ void OutputHelper::setPoolSize(const size_t newSize) {
 }
 
 void OutputHelper::expandPool(const size_t newSize) {
+    size_t oldSize = mProcessingPool.size();
     mProcessingPool.resize(newSize);
-    for (size_t i = mProcessingPool.size(); i < newSize; ++i) {
+    for (size_t i = oldSize; i < newSize; ++i) {
         mProcessingPool[i] = new FileOutput();
     }
 }
 
 void OutputHelper::reducePool(const size_t newSize) {
-    for (size_t i = mProcessingPool.size(); i >= newSize; --i) {
+    size_t oldSize = mProcessingPool.size();
+    for (size_t i = newSize; i < oldSize; ++i) {
         delete mProcessingPool[i];
     }
     mProcessingPool.resize(newSize);

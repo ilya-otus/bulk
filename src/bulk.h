@@ -3,8 +3,10 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include <bitset>
 #include "bulk_interface.h"
 #include "output_helper.h"
+
 
 using BulkContainer = std::vector<std::string>;
 class Bulk : public IBulk
@@ -22,8 +24,7 @@ private:
 
 private:
     std::vector<BulkContainer> mData;
-    bool mBlockStarted = false;
-    bool mBlockFinished = false;
+    std::bitset<2> mStatus = 0;
     size_t mBulkSize;
     OutputHelper mOut;
 };

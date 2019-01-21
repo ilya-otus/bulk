@@ -17,3 +17,4 @@ set_target_properties(blk PROPERTIES
     CXX_STANDARD_REQUIRED ON
     COMPILE_OPTIONS "-Wpedantic;-Wall;-Wextra"
 )
+target_link_libraries(blk stdc++fs)

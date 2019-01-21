@@ -8,7 +8,7 @@ class string;
 class OutputHelper
 {
 public:
-    OutputHelper(size_t poolSize = 2, bool loggingEnabled = false);
+    OutputHelper(size_t poolSize = 2, bool loggingEnabled = true);
     ~OutputHelper();
     void endl();
     void operator<<(const std::string &o);
