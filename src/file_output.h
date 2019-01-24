@@ -1,14 +1,23 @@
 #pragma once
-#include "output_item_interface.h"
 #include <fstream>
+#include "output_item_interface.h"
 
-class FileOutput final: public IOutputItem
+class FileOutput : public IOutputItem<FileOutput>
 {
 public:
     ~FileOutput();
-    void endl() override;
-    void operator<<(const std::string &output) override;
-    bool isAvailable() const override;
+    template<typename T>
+    void output(const T &value) {
+        if (init()) {
+            for (const auto &v : value) {
+                mDumpFile << v;
+            }
+            mInitialized = false;
+            mDumpFile.close();
+        }
+    }
+
+    bool isAvailable() const;
 private:
     std::string genFileName() const;
     bool init();

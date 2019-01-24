@@ -14,7 +14,7 @@ Bulk::Bulk(size_t bulkSize)
 
 Bulk::~Bulk() {
     if (mData.back().size() != mBulkSize && mStatus == 0) {
-        dumpBulk(mData.back());
+        mOut << mData.back();
     }
 }
 
@@ -28,14 +28,14 @@ void Bulk::addCommand(const std::string &c) {
     }
     mData.back().emplace_back(c);
     if (mData.back().size() == mBulkSize && (mStatus & Status::Started) == 0) {
-        dumpBulk(mData.back());
+        mOut << mData.back();
     }
 }
 
 void Bulk::startOfBlock() {
     mStatus = mStatus | Status::Started;
     if (mData.size() !=0 && mData.back().size() != mBulkSize) {
-        dumpBulk(mData.back());
+        mOut << mData.back();
     }
     mData.emplace_back(BulkContainer());
 }
@@ -43,7 +43,7 @@ void Bulk::startOfBlock() {
 void Bulk::endOfBlock() {
     mStatus &= (~Status::Started);
     mStatus |= Status::Finished;
-    dumpBulk(mData.back());
+    mOut << mData.back();
 }
 
 void Bulk::dumpAll() {
@@ -51,18 +51,7 @@ void Bulk::dumpAll() {
         mData.erase(mData.end() - 1);
     }
     for (auto bulk: mData) {
-        dumpBulk(bulk);
+        mOut << bulk;
     }
-}
-
-void Bulk::dumpBulk(const BulkContainer &rawBulk) {
-    std::string outputLine = "bulk: ";
-    for (auto item = rawBulk.begin(); item != rawBulk.end(); ++item) {
-        outputLine += *item;
-        if (item != rawBulk.end()-1) {
-            outputLine += ", ";
-        }
-    }
-    mOut << outputLine;
 }
 

@@ -20,12 +20,9 @@ public:
     void dumpAll();
 
 private:
-    void dumpBulk(const BulkContainer &rawBulk);
-
-private:
     std::vector<BulkContainer> mData;
     std::bitset<2> mStatus = 0;
     size_t mBulkSize;
-    OutputHelper mOut;
+    OutputHelper<> mOut;
 };
 

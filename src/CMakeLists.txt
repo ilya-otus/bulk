@@ -10,7 +10,6 @@ add_library(blk
     handler.cpp
     handler_fabric.cpp
     lib.cpp
-    output_helper.cpp
     )
 set_target_properties(blk PROPERTIES
     CXX_STANDARD 17

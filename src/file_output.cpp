@@ -12,22 +12,8 @@ FileOutput::~FileOutput() {
     }
 }
 
-void FileOutput::endl() {
-    if (init()) {
-        mDumpFile << std::endl;
-        mInitialized = false;
-        mDumpFile.close();
-    }
-}
-
 bool FileOutput::isAvailable() const {
     return !mInitialized;
-}
-
-void FileOutput::operator<<(const std::string &output) {
-    if (init()) {
-        mDumpFile << output;
-    }
 }
 
 bool FileOutput::init() {
