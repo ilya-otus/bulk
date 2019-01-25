@@ -1,5 +1,6 @@
 #pragma once
 #include <fstream>
+#include <type_traits>
 #include "output_item_interface.h"
 
 class FileOutput : public IOutputItem<FileOutput>
@@ -7,7 +8,9 @@ class FileOutput : public IOutputItem<FileOutput>
 public:
     ~FileOutput();
     template<typename T>
-    void output(const T &value) {
+    typename std::enable_if_t<
+            is_std_container_v<T>, void
+            > output(const T &value) {
         if (init()) {
             mDumpFile << "bulk: ";
             for (auto item = value.begin(); item != value.end(); ++item) {

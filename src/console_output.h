@@ -7,7 +7,9 @@ class ConsoleOutput : public IOutputItem<ConsoleOutput>
 {
 public:
     template<typename T>
-    void output(const T &value) {
+    typename std::enable_if_t<
+            is_std_container_v<T>, void
+            > output(const T &value) {
         std::cout << "bulk: ";
         for (auto item = value.begin(); item != value.end(); ++item) {
             std::cout << *item;
