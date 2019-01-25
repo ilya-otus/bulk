@@ -9,9 +9,14 @@ public:
     template<typename T>
     void output(const T &value) {
         if (init()) {
-            for (const auto &v : value) {
-                mDumpFile << v;
+            mDumpFile << "bulk: ";
+            for (auto item = value.begin(); item != value.end(); ++item) {
+                mDumpFile << *item;
+                if (item != value.end()-1) {
+                    mDumpFile << ", ";
+                }
             }
+            mDumpFile << std::endl;
             mInitialized = false;
             mDumpFile.close();
         }
